@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Description</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <style>
+        /* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Header Styles */
+header {
+    background-color: #1f1f1f;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00adb5;
+}
+
+header .nav-links a {
+    margin-left: 20px;
+    color: #e6e6e6;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+header .nav-links a:hover {
+    color: #00adb5;
+}
+
+/* Anime Description Section */
+.anime-description-section {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.anime-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #00adb5;
+    text-align: center;
+}
+
+.anime-content p {
+    font-size: 18px;
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    color: #e6e6e6;
+    line-height: 1.8;
+}
+
+/* Episode List */
+.anime-episodes h2 {
+    font-size: 28px;
+    color: #00adb5;
+    margin-top: 40px;
+    text-align: center;
+}
+
+#episode-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+#episode-list li {
+    background-color: #00adb5;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#episode-list li:hover {
+    background-color: #02c9cf;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #1f1f1f;
+    color: #e6e6e6;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    header .logo {
+        font-size: 20px;
+    }
+
+    header .nav-links a {
+        font-size: 14px;
+        margin-left: 10px;
+    }
+
+    .anime-header h1 {
+        font-size: 28px;
+    }
+
+    .anime-content p {
+        font-size: 16px;
+    }
+
+    .anime-episodes h2 {
+        font-size: 24px;
+    }
+
+    #episode-list li {
+        font-size: 16px;
+        padding: 8px 15px;
+    }
+}
+
+    </style>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Anime Stream</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="popular.html">Popular</a>
+                <a href="genres.html">Genres</a>
+                <a href="search.html">Search</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="anime-description-section">
+        <div class="anime-header">
+            <h1 id="anime-title">Anime Title</h1>
+        </div>
+        <div class="anime-content">
+            <p id="anime-description">Anime description will appear here. This is where the anime's story and summary will be displayed.</p>
+        </div>
+        <div class="anime-episodes">
+            <h2>Episodes</h2>
+            <ul id="episode-list"></ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Anime Stream. All rights reserved.</p>
+    </footer>
+
+    <script src="AnimeDescription.js"></script> <!-- Link to your JS file -->
+</body>
+</html>

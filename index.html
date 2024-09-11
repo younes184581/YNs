@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Streaming</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    background-image: radial-gradient(circle, rgba(0, 162, 255, 0.4) 20%, transparent 20%), /* Aqua spot pattern */
+                      radial-gradient(circle, rgba(0, 162, 255, 0.4) 20%, transparent 20%);
+    background-position: 0 0, 100px 100px;
+    background-size: 200px 200px;
+    color: white;
+    overflow-x: hidden;
+}
+
+@media screen and (min-width: 1024px) {
+    body {
+        background-size: 400px 400px; /* Increase the size of the spots on larger screens */
+    }
+}
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1a1a1a;
+            padding: 10px 20px;
+            position: relative;
+            z-index: 10;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00FFFF; /* Aqua */
+            cursor: pointer;
+        }
+        .navbar .menu {
+            display: flex;
+            gap: 20px;
+        }
+        .navbar .menu a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+            padding: 5px 10px;
+            transition: color 0.3s;
+        }
+        .navbar .menu a:hover {
+            color: #00FFFF; /* Aqua */
+        }
+        .navbar .icons {
+            display: flex;
+            gap: 15px;
+        }
+        .navbar .icons i {
+            font-size: 18px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .navbar .icons i:hover {
+            color: #00FFFF; /* Aqua */
+        }
+        .navbar .menu-icon {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+        .navbar .menu.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background-color: #1a1a1a;
+            gap: 0;
+        }
+        .navbar .menu.active a {
+            padding: 15px;
+            border-bottom: 1px solid #333;
+            text-align: center;
+        }
+        /* Google-like search input */
+        .search-box {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 11;
+            border: 1px solid #ddd;
+        }
+        .search-box input {
+            width: calc(100% - 20px); /* Adjust width to fit padding */
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            border-radius: 30px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .search-box.active {
+            display: block;
+        }
+        .main-feature {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            background: url('https://wallpaperaccess.com/full/3111763.jpg') no-repeat center/cover;
+            min-height: 400px;
+        }
+        .main-feature .content {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            text-align: center;
+            max-width: 500px;
+            border-radius: 10px;
+            animation: fadeIn 1s ease-in;
+        }
+        .main-feature .content img {
+            width: 80%;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        .main-feature .content img:hover {
+            transform: scale(1.05);
+        }
+        .cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        .cta .watch-btn {
+            background-color: #00FFFF; /* Aqua */
+            color: black;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .cta .watch-btn:hover {
+            background-color: #00CCCC; /* Darker Aqua */
+            transform: translateY(-5px);
+        }
+        .cta .bookmark {
+            font-size: 24px;
+            cursor: pointer;
+            color: #00FFFF; /* Aqua */
+            transition: transform 0.3s;
+        }
+        .cta .bookmark:hover {
+            transform: rotate(15deg);
+        }
+        .carousel {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.carousel .slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    position: relative;
+}
+
+.carousel .slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.carousel .slide img {
+    width: 100%;
+    height: auto;
+    max-height: 100vh; /* Adjust this value to fit the screen better */
+    object-fit: cover;
+    display: block;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 1000%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 919%);
+}
+
+/* Dots styling */
+.carousel .dots {
+    text-align: center;
+    padding: 10px;
+}
+
+.carousel .dot {
+    height: 12px;
+    width: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.carousel .dot.active {
+    background-color: #00FFFF; /* Aqua */
+}
+
+
+        .additional-content {
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .additional-content h2 {
+            margin-bottom: 30px;
+            color: #00FFFF; /* Aqua */
+        }
+        .thumbnail-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .thumbnail-grid .thumbnail {
+            width: 150px;
+            height: 200px;
+            background-color: #2e2e2e;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .thumbnail-grid .thumbnail:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0.8;
+        }
+        .thumbnail-grid .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #1a1a1a;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border-radius: 50px
+        }
+        .footer .social-icons {
+            margin-bottom: 10px;
+        }
+        .footer .social-icons a {
+            margin: 0 10px;
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        .footer .social-icons a:hover {
+            color: #00FFFF; /* Aqua */
+        }
+        .footer p {
+            font-size: 14px;
+        }
+        .start-watching-btn {
+            position: absolute;
+            top: 800px;
+            left: 20px;
+            background-color: #00FFFF;
+            color: #000;
+            padding: 20px 60px;
+            font-size: 16px;
+            font-family: 'Russo One', sans-serif;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .start-watching-btn:hover {
+            background-color: #00CCCC;
+            transform: scale(1.05);
+        }
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .navbar .menu {
+                display: none;
+            }
+            .navbar .menu-icon {
+                display: block;
+            }
+            .search-box {
+                top: 70px; /* Adjusted to fit better in smaller screens */
+                max-width: 90%;
+            }
+            .main-feature {
+                flex-direction: column;
+                padding: 30px;
+            }
+            .main-feature .content img {
+                width: 90%;
+            }
+            .cta .watch-btn {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+            .cta .bookmark {
+                font-size: 20px;
+            }
+            .start-watching-btn {
+            position: absolute;
+            top: 800px;
+            left: 20px;
+            background-color: #00FFFF;
+            color: #000;
+            padding: 20px 60px;
+            font-size: 16px;
+            font-family: 'Russo One', sans-serif;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .start-watching-btn:hover {
+            background-color: #00CCCC;
+            transform: scale(1.05);
+        }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 10px;
+            }
+            .navbar .logo {
+                font-size: 20px;
+            }
+            .navbar .icons i {
+                font-size: 16px;
+            }
+            .main-feature {
+                padding: 20px;
+                min-height: 300px;
+            }
+            .main-feature .content {
+                max-width: 90%;
+            }
+            .cta .watch-btn {
+                font-size: 14px;
+                padding: 6px 12px;
+            }
+            .cta .bookmark {
+                font-size: 18px;
+            }
+            .thumbnail-grid {
+                gap: 10px;
+            }
+            .thumbnail-grid .thumbnail {
+                width: 120px;
+                height: 160px;
+            }
+            .start-watching-btn {
+            position: absolute;
+            top: 170px;
+            left: 20px;
+            background-color: #00FFFF;
+            color: #000;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-family: 'Russo One', sans-serif;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .start-watching-btn:hover {
+            background-color: #00CCCC;
+            transform: scale(1.05);
+        }
+        }
+        .thumbnail-grid .thumbnail {
+    width: 150px;
+    height: 200px;
+    background-color: #2e2e2e;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8); /* Added black shadow */
+}
+
+.thumbnail-grid .thumbnail:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 1); /* Stronger shadow on hover */
+    opacity: 0.8;
+}
+/* Navbar styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar-items {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-items li a {
+    color: white;
+    text-decoration: none;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">Xanime</div>
+    </ul>
+</nav>
+        <div class="menu">
+            <a href="#">Home</a>
+            <a href="#">Anime List</a>
+            <a href="#">Popular</a>
+            <a href="#">Discord</a>
+        </div>
+        <div class="icons">
+            <i class="fas fa-search" id="searchIcon"></i>
+            <i class="fas fa-bars menu-icon" id="menuIcon"></i>
+        </div>
+        <div class="search-box" id="searchBox">
+            <input type="text" placeholder="Search for anime...">
+        </div>
+    </div>
+           
+    <div class="carousel">
+        <div class="slides">
+            <div class="slide">
+                <img src="img/alyasancover.jpg" alt="Anime Cover">
+            </div>
+            <div class="slide">
+                <img src="img/isekaishikakucover.jpg" alt="Anime Cover">
+            </div>
+            <div class="slide">
+                <img src="img/towerofgodcover.jpg" alt="Anime Cover">
+            </div>
+        </div>
+          <!-- Start Watching Button (One for all slides) -->
+          <a href="https://example.com/start-watching" class="start-watching-btn">Start Watching</a>
+          <div class="dots">
+        <div class="dots">
+            <span class="dot active" data-slide="0"></span>
+            <span class="dot" data-slide="1"></span>
+            <span class="dot" data-slide="2"></span>
+        </div>
+    </div>
+    <div class="additional-content">
+        <h2>NEW RELEASE</h2>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Anime List</title>
+            <link rel="stylesheet" href="styles.css">
+        </head>
+        <body>
+            <header>
+                <h1>Anime Collection</h1>
+            </header>
+            <main>
+                <div class="thumbnail-grid">
+                    <a href="anime-description.html?id=1" class="thumbnail">
+                        <img src="img/AlyaSomeTimesHideHerFeelingsInRussian.jpg" alt="Anime 1">
+                    </a>
+                    <a href="anime-description.html?id=2" class="thumbnail">
+                        <img src="img/hazurewaku_no_joutai_ijou_skill_de_saikyou_ni_natta_ore_ga_subete_wo_juurin_suru_made_12471.webp" alt="Anime 2">
+                    </a>
+                    <a href="anime-description.html?id=3" class="thumbnail">
+                        <img src="img/Towerofgod.jpg" alt="Anime 3">
+                    </a>
+                    <a href="anime-description.html?id=4" class="thumbnail">
+                        <img src="img/isekai_shikkaku.webp" alt="Anime 4">
+                    </a>
+                    <a href="anime-description.html?id=5" class="thumbnail">
+                        <img src="img/thefable.jpg" alt="Anime 5">
+                    </a>
+                    <a href="anime-description.html?id=6" class="thumbnail">
+                        <img src="img/soushiminseries.webp" alt="Anime 6">
+                    </a>
+                    <a href="anime-description.html?id=7" class="thumbnail">
+                        <img src="img/tsue_to_tsurugi_no_wistoria_12518.webp" alt="Anime 7">
+                    </a>
+                    <a href="anime-description.html?id=8" class="thumbnail">
+                        <img src="img/naze_boku_no_sekai_wo_daremo_oboeteinai_no_kay_12042.webp" alt="Anime 8">
+                    </a>
+                    <a href="anime-description.html?id=9" class="thumbnail">
+                        <img src="img/boku_no_tsuma_wa_kanjou_ga_nai_12566.webp" alt="Anime 9">
+                    </a>
+                    <a href="anime-description.html?id=10" class="thumbnail">
+                        <img src="img/shimaiossanboukensha.webp" alt="Anime 10">
+                    </a>
+                </div>
+            </main>
+            <footer>
+                <p></p>
+            </footer>
+        </body>
+        </html>
+        
+
+    <div class="footer">
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p>&copy; 2024 AnimeStream. All rights reserved.</p>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        const menuIcon = document.getElementById('menuIcon');
+        const menu = document.querySelector('.menu');
+
+        menuIcon.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+
+        // Show Google-like search input
+        const searchIcon = document.getElementById('searchIcon');
+        const searchBox = document.getElementById('searchBox');
+
+        searchIcon.addEventListener('click', () => {
+            searchBox.classList.toggle('active');
+        });
+
+        // Dot slider functionality
+        const slides = document.querySelector('.slides');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            if (index >= dots.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = dots.length - 1;
+            } else {
+                currentSlide = index;
+            }
+
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const index = parseInt(dot.getAttribute('data-slide'));
+                showSlide(index);
+            });
+        });
+
+        // Optional: Auto slide change every 3 seconds
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 3000);        
+    </script>
+</body>
+</html>
